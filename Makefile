@@ -1,7 +1,7 @@
 
 
-SRCS=src/china_countries.zip src/india_countries.zip \
-	src/all_bounds.zip src/all_countries.zip
+SRCS=src/china_countries.shp src/india_countries.shp \
+	src/all_bounds.shp src/all_countries.shp
 
 CTR_ALL=build/all_countries.shp
 CTR_PRIMARY=build/all_primary_countries.shp
@@ -23,18 +23,20 @@ BNDS:=$(BND_ALL) $(BND_INTL) $(BND_CN) $(BND_IN) \
 CTRS:=$(CTR_ALL) $(CTR_PRIMARY) $(CTR_CN) $(CTR_CN_PRIMARY) \
 	$(CTR_IN) $(CTR_IN_PRIMARY)
 
-all: $(SRCS) zips geojson dist/countries.csv
+all: $(SRCS) zips geojson geojsongz dist/countries.csv
 	rm -rf build
 
 zips: $(patsubst build/%.shp, dist/%.zip, $(CTRS) $(BNDS))
 
-geojson: $(patsubst build/%.shp, dist/%.geojson.gz, $(CTRS) $(BNDS))
+geojsongz: $(patsubst build/%.shp, dist/%.geojson.gz, $(CTRS) $(BNDS))
+
+geojson: $(patsubst build/%.shp, dist/%.geojson, $(CTRS) $(BNDS))
 
 dist/%.zip: build/%.shp | dist
 	zip $@ $(basename $<).*
 
 dist/%.geojson.gz: dist/%.geojson | dist
-	gzip $<
+	gzip -fk $<
 
 dist/%.geojson: build/%.shp dist
 	ogr2ogr -f GeoJSON $@ $<
