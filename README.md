@@ -28,8 +28,8 @@ Data | Description | Links by perspective
 "Primary" countries | UN member states, observers, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/china_primary_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/india_primary_countries.geojson?raw=true)
 "All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/china_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/india_countries.geojson?raw=true)
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.geojson?raw=true)
-Non-disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_bounds.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_bounds.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_bounds.geojson?raw=true)
-Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_bounds.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_bounds.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_bounds.geojson?raw=true)
+Non-disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_boundaries.geojson?raw=true)
+Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_boundaries.geojson?raw=true)
 
 **Key fields**
 
@@ -52,9 +52,11 @@ Boundaries:"IND" - 'India' perspective
 - 1:Country boundary
 - 2:Disputed boundary
 
-### Attribute table [CSV](https://github.com/wri/wri-bounds/blob/master/dist/countries.csv)
+### Attribute table
+[CSV](https://github.com/wri/wri-bounds/blob/master/dist/countries.csv)
 
 Column | Description | Source
+------ | ------ | ------
 iso_short | ISO Short Name | ISO 3166
 name | **Country name** | Natural Earth Data
 formal\_name | Full formal country name | Natural Earth Data
@@ -90,4 +92,4 @@ OS X Macports
 Ubuntu
 ```sudo apt-get install gdal-dev```
 
-Source data processed in [process-boundaries](http://github.com/wri/process-bounds/ repository.
+Source data processed in [process-boundaries](http://github.com/wri/process-bounds/) repository.

@@ -33,7 +33,7 @@ geojsongz: $(patsubst build/%.shp, dist/%.geojson.gz, $(CTRS) $(BNDS))
 geojson: $(patsubst build/%.shp, dist/%.geojson, $(CTRS) $(BNDS))
 
 dist/%.zip: build/%.shp | dist
-	zip $@ $(basename $<).*
+	zip -j $@ $(basename $<).*
 
 dist/%.geojson.gz: dist/%.geojson | dist
 	gzip -fk $<
