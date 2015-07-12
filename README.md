@@ -9,14 +9,14 @@ Based off NaturalEarthData.com
 
 Data are organized into three perspectives: 'US', 'China (CN)', and 'India (IN)'.
 
-A [CSV](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.zip?raw=true) of names and other attributes is also available.
+A [CSV](https://github.com/wri/wri-bounds/blob/master/countries.csv) of names and other attributes is also available.
 
 **Shapefiles**
 
 Data | Description | Links by perspective
 ------ | ------ | ------
-"Primary" countries | UN member states, observers, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/china_primary_countries.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/india_primary_countries.zip?raw=true)
-"All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/china_countries.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/india_countries.zip?raw=true)
+"Primary" countries | UN member states, observers, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_primary_countries.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_primary_countries.zip?raw=true)
+"All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_countries.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_countries.zip?raw=true)
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.zip?raw=true)
 Non-disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_bounds.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_bounds.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_bounds.zip?raw=true)
 Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_bounds.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_bounds.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_bounds.zip?raw=true)
@@ -25,8 +25,8 @@ Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob
 
 Data | Description | Links by perspective
 ------ | ------ | ------
-"Primary" countries | UN member states, observers, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/china_primary_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/india_primary_countries.geojson?raw=true)
-"All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/china_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/india_countries.geojson?raw=true)
+"Primary" countries | UN member states, observers, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_primary_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_primary_countries.geojson?raw=true)
+"All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_countries.geojson?raw=true)
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.geojson?raw=true)
 Non-disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_boundaries.geojson?raw=true)
 Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_boundaries.geojson?raw=true)
@@ -84,12 +84,15 @@ wb\_region | World Bank Region | Natural Earth Data
 
 ### Build
 
-Requires [GDAL/OGR](http://www.gdal.org/index.html).
+Requires:
+ - [GDAL/OGR](http://www.gdal.org/index.html) with spatialite
+ - [node](http://nodejs.org)
+ - [mapshaper](http://mapshaper.org)
 
 OS X Macports
-```sudo port install gdal```
-
-Ubuntu
-```sudo apt-get install gdal-dev```
-
-Source data processed in [process-boundaries](http://github.com/wri/process-bounds/) repository.
+```
+sudo port install gdal +spatialite
+sudo port install npm
+npm install mapshaper
+make
+```

@@ -4,4 +4,4 @@
 *.py[c|o]
 
 node_modules/
-build/
+shp/
