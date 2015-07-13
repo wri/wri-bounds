@@ -40,9 +40,6 @@ _=shp/__tmp.shp
 _2=shp/__tmp2.shp
 
 all: zips geojson
-	rm -rf shp
-
-build: zips geojson
 
 geojsongz: $(patsubst shp/%.shp, dist/%.geojson.gz, $(CTRS) $(BNDS))
 
@@ -57,10 +54,10 @@ dist/%.geojson.gz: dist/%.geojson | dist
 	gzip -fk $<
 
 dist/%.geojson: shp/%.shp | dist
-	ogr2ogr -f GeoJSON $@ $< -overwrite
+	mapshaper -i $< encoding=UTF-8 -o $@ force
 
 shp/%_primary_countries.shp: shp/%_countries.shp
-	ogr2ogr -where PRIMARY="1" $@ $< -lco ENCODING=UTF-8 -overwrite
+	ogr2ogr -where PRIMARY="1" -overwrite $@ $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
 
 $(CTR_ALL): $(INTERSECT) $(ATTRS)
 	mapshaper -i $< -dissolve2 ADM0_A3 -o $_ force
@@ -77,33 +74,33 @@ $(CTR_IN): $(INTERSECT) $(ATTRS)
 	mapshaper -i $(_2) -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $@ force
 
 $(BNDS): $(BND_ALL)
-	ogr2ogr -where INTL="1" $(BND_INTL) $< -overwrite
-	ogr2ogr -where INTL="2" $(BND_INTL_DIS) $< -overwrite
-	ogr2ogr -where CHN="1" $(BND_CN) $< -overwrite
-	ogr2ogr -where CHN="2" $(BND_CN_DIS) $< -overwrite
-	ogr2ogr -where IND="1" $(BND_IN) $< -overwrite
-	ogr2ogr -where IND="2" $(BND_IN_DIS) $< -overwrite
-	ogr2ogr $(BND_CP) $< -overwrite
+	ogr2ogr -where INTL="1" -overwrite $(BND_INTL) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+	ogr2ogr -where INTL="2" -overwrite $(BND_INTL_DIS) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+	ogr2ogr -where CHN="1" -overwrite $(BND_CN) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+	ogr2ogr -where CHN="2" -overwrite $(BND_CN_DIS) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+	ogr2ogr -where IND="1" -overwrite $(BND_IN) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+	ogr2ogr -where IND="2" -overwrite $(BND_IN_DIS) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+	ogr2ogr -overwrite $(BND_CP) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
 
 $(BND_ALL): $(INTERSECT) $(9DASH)
 	node disputed.js $< $@
 	ogr2ogr $@ $(9DASH) -append
 
 $(INTERSECT): $(CTR) $(DIS)
-	ogr2ogr -sql "SELECT ST_Intersection(A.geometry, B.geometry) AS geometry, A.ADM0_A3 AS ADM0_A3, B.sr_brk_a3 AS SR_BRK_A3, B.NOTE_BRK as NOTE_BRK FROM $1 A, $2 B WHERE ST_Overlaps(A.geometry, B.geometry)" -dialect SQLITE shp shp -nln __tmp -overwrite -skip -nlt POLYGON -lco ENCODING=UTF-8
-	mapshaper -i $< -erase $_ -o $(_2) force
-	ogr2ogr $_ $(_2) -append
-	mapshaper -i $_ auto-snap -filter-islands remove-empty -o $(_2) force
-	mapshaper -i $(_2) -each "CHN_A3=(NOTE_BRK.indexOf('China')>=0 || ADM0_A3=='TWN' ? 'CHN' : ADM0_A3), IND_A3=(NOTE_BRK.indexOf('China')>=0 || ADM0_A3=='TWN' ? 'CHN' : ADM0_A3)" -o $@ force
+	mapshaper -i $< auto-snap -erase $(word 2,$^) -o $_ force
+	mapshaper -i $_ -each "NOTE_BRK='', sr_brk_a3=''" -o $(_2) force
+	ogr2ogr $(_2) $(word 2,$^) -append
+	mapshaper -i $(_2) auto-snap -filter-islands min-vertices=3 -o $_ force
+	mapshaper -i $_ -each "CHN_A3=((NOTE_BRK.indexOf('China')>=0 || ADM0_A3=='TWN') ? 'CHN' : ADM0_A3), IND_A3=((NOTE_BRK.indexOf('India')>=0) ? 'IND' : ADM0_A3)" -o $@ force
 
 
 $(CTR): $(CTR_SRC)
 	ogr2ogr -sql "SELECT geometry, CASE ADM0_A3 WHEN 'SOL' THEN 'SOM' WHEN 'KAB' THEN 'KAZ' WHEN 'CYN' THEN 'CYP' WHEN 'KAS' THEN 'IND' ELSE ADM0_A3 END AS ADM0_A3 FROM $(patsubst shp/%.shp,%,$<)" -dialect SQLITE shp shp -nln __tmp -overwrite -skip -lco ENCODING=UTF-8
-	mapshaper -i $_ auto-snap -dissolve ADM0_A3 -o $@ force 
+	mapshaper -i $_ auto-snap -dissolve ADM0_A3 -o $@ force
 
 $(DIS): $(DIS_SRC)
-	ogr2ogr -where "(TYPE IN ('Disputed', 'Breakaway') AND sr_brk_a3 NOT IN ('B19','B30')) OR sr_brk_a3='B45'" $@ $< -overwrite -lco ENCODING=UTF-8
-
+	ogr2ogr -where "(TYPE IN ('Disputed', 'Breakaway') AND sr_brk_a3 NOT IN ('B19','B30')) OR sr_brk_a3='B45'" $_ $< -overwrite -lco ENCODING=UTF-8
+	mapshaper -i $_ auto-snap -filter-islands min-vertices=3 -o $@ force
 
 shp/%.shp: shp/%.zip
 	unzip -o $< -d shp
