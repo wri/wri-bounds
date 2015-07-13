@@ -61,17 +61,21 @@ shp/%_primary_countries.shp: shp/%_countries.shp
 
 $(CTR_ALL): $(INTERSECT) $(ATTRS)
 	mapshaper -i $< -dissolve2 ADM0_A3 -o $_ force
-	mapshaper -i $_ -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $@ force
+	mapshaper -i $_ -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $(_2) force
+	ogr2ogr -overwrite $@ $(_2) -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
 
 $(CTR_CN): $(INTERSECT) $(ATTRS)
 	mapshaper -i $< -dissolve2 CHN_A3 -o $_ force
 	mapshaper -i $_ -rename-fields ADM0_A3=CHN_A3 -o $(_2) force
-	mapshaper -i $(_2) -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $@ force
+	mapshaper -i $(_2) -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $_ force
+	ogr2ogr -overwrite $@ $_ -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
+
 
 $(CTR_IN): $(INTERSECT) $(ATTRS)
 	mapshaper -i $< -dissolve2 IND_A3 -o $_ force
 	mapshaper -i $_ -rename-fields ADM0_A3=IND_A3 -o $(_2) force
-	mapshaper -i $(_2) -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $@ force
+	mapshaper -i $(_2) -join $(ATTRS) keys=ADM0_A3,adm0_a3 -o $_ force
+	ogr2ogr -overwrite $@ $_ -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
 
 $(BNDS): $(BND_ALL)
 	ogr2ogr -where INTL="1" -overwrite $(BND_INTL) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
