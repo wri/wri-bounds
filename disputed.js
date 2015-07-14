@@ -64,7 +64,7 @@ get_disputed = function(lyr, arcs){
 	    }
 	    // no border aroud saichen glacier
 	    if ((ld['ADM0_A3']==='KAS' || rd['ADM0_A3']==='KAS') &&
-		ld['ADM0_A3']!=='CHN' && rd['ADM0_A3']==='CHN') {
+		ld['ADM0_A3']!=='CHN' && rd['ADM0_A3']!=='CHN') {
 		row['INTL']=0;
 		row['CHN']=0;
 	    }
