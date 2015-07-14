@@ -102,8 +102,9 @@ $(CTR): $(CTR_SRC)
 	ogr2ogr -sql "SELECT geometry, CASE ADM0_A3 WHEN 'SOL' THEN 'SOM' WHEN 'KAB' THEN 'KAZ' WHEN 'CYN' THEN 'CYP' WHEN 'KAS' THEN 'IND' ELSE ADM0_A3 END AS ADM0_A3 FROM $(patsubst shp/%.shp,%,$<)" -dialect SQLITE shp shp -nln __tmp -overwrite -skip -lco ENCODING=UTF-8
 	mapshaper -i $_ auto-snap -dissolve ADM0_A3 -o $@ force
 
+# B30=Somaliland B45=Saichen Glacier
 $(DIS): $(DIS_SRC)
-	ogr2ogr -where "(TYPE IN ('Disputed', 'Breakaway') AND sr_brk_a3 NOT IN ('B19','B30')) OR sr_brk_a3='B45'" $_ $< -overwrite -lco ENCODING=UTF-8
+	ogr2ogr -where "(TYPE IN ('Disputed', 'Breakaway') AND sr_brk_a3<>'B30') OR sr_brk_a3='B45'" $_ $< -overwrite -lco ENCODING=UTF-8
 	mapshaper -i $_ auto-snap -filter-islands min-vertices=3 -o $@ force
 
 shp/%.shp: shp/%.zip

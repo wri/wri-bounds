@@ -62,7 +62,12 @@ get_disputed = function(lyr, arcs){
 	    } else if (ld['ADM0_A3']==='CNM' || rd['ADM0_A3']==='CNM') {
 		row['INTL']=2;
 	    }
-
+	    // no border aroud saichen glacier
+	    if ((ld['ADM0_A3']==='KAS' || rd['ADM0_A3']==='KAS') &&
+		ld['ADM0_A3']!=='CHN' && rd['ADM0_A3']==='CHN') {
+		row['INTL']=0;
+		row['CHN']=0;
+	    }
 	    if (ld['CHN_A3']==='CHN' && rd['CHN_A3']==='CHN') {
 		row['CHN']=0;
 	    } else if ((ld['sr_brk_a3'] || rd['sr_brk_a3']) &&
