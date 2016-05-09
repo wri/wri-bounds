@@ -27,11 +27,12 @@ CTR_PRIMARY=shp/all_primary_countries.shp
 CTR_CN_PRIMARY=shp/cn_primary_countries.shp
 CTR_IN_PRIMARY=shp/in_primary_countries.shp
 
+
 BNDS:=$(BND_CP) $(BND_INTL) $(BND_CN) $(BND_IN) \
 	$(BND_INTL_DIS) $(BND_CN_DIS) $(BND_IN_DIS)
 
 CTRS:=$(CTR_ALL) $(CTR_PRIMARY) $(CTR_CN) $(CTR_CN_PRIMARY) \
-	$(CTR_IN) $(CTR_IN_PRIMARY)
+	$(CTR_IN) $(CTR_IN_PRIMARY) $(DIS)
 
 1=$(notdir $(basename $<))
 2=$(notdir $(basename $(word 2,$^)))
@@ -99,8 +100,9 @@ $(INTERSECT): $(CTR) $(DIS)
 
 
 $(CTR): $(CTR_SRC)
-	ogr2ogr -sql "SELECT geometry, CASE ADM0_A3 WHEN 'SOL' THEN 'SOM' WHEN 'KAB' THEN 'KAZ' WHEN 'CYN' THEN 'CYP' WHEN 'KAS' THEN 'IND' ELSE ADM0_A3 END AS ADM0_A3 FROM $(patsubst shp/%.shp,%,$<)" -dialect SQLITE shp shp -nln __tmp -overwrite -skip -lco ENCODING=UTF-8
-	mapshaper -i $_ auto-snap -dissolve ADM0_A3 -o $@ force
+	mapshaper -i $< -each "ADM0_A3=(ADM0_A3=='SOL' ? 'SOM' : ADM0_A3=='KAB'? 'KAZ' : ADM0_A3=='CYN' ? 'CYP' : ADM0_A3=='KAS' ? 'IND' : ADM0_A3)" -o $_ force
+	ogr2ogr $(_2) $_ -lco ENCODING=UTF-8
+	mapshaper -i $(_2) auto-snap -dissolve ADM0_A3 -o $@ force
 
 # B30=Somaliland B45=Saichen Glacier
 $(DIS): $(DIS_SRC)

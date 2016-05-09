@@ -20,6 +20,7 @@ Data | Description | Links by perspective
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.zip?raw=true)
 Non-disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_bounds.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_bounds.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_bounds.zip?raw=true)
 Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_bounds.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_bounds.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_bounds.zip?raw=true)
+Disputed areas | Disputed areas | [ALL](https://github.com/wri/wri-bounds/blob/master/dist/disputed.zip?raw=true)
 
 **GeoJSON**
 
@@ -30,6 +31,8 @@ Data | Description | Links by perspective
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.geojson?raw=true)
 Non-disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_boundaries.geojson?raw=true)
 Disputed | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_boundaries.geojson?raw=true)
+Disputed areas | Disputed areas | [ALL](https://github.com/wri/wri-bounds/blob/master/dist/disputed.zip?raw=true)
+
 
 **Key fields**
 
@@ -85,14 +88,14 @@ wb\_region | World Bank Region | Natural Earth Data
 ### Build
 
 Requires:
- - [GDAL/OGR](http://www.gdal.org/index.html) with spatialite
+ - [GDAL/OGR](http://www.gdal.org/index.html)
  - [node](http://nodejs.org)
  - [mapshaper](http://mapshaper.org)
 
 OS X Macports
 ```
-sudo port install gdal +spatialite
-sudo port install npm
+port install gdal
+port install npm
 npm install mapshaper
 make
 ```
