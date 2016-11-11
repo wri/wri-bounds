@@ -7,7 +7,7 @@ Based off NaturalEarthData.com
 
 ### Downloads
 
-Data are organized into three perspectives: 'US', 'China (CN)', and 'India (IN)'. 
+Data are organized into three perspectives: 'US', 'China (CN)', and 'India (IN)'.
 
 A [CSV](https://github.com/wri/wri-bounds/blob/master/countries.csv) of names and other attributes is also available.
 
@@ -90,12 +90,12 @@ wb\_region | World Bank Region | Natural Earth Data
 Requires:
  - [GDAL/OGR](http://www.gdal.org/index.html)
  - [node](http://nodejs.org)
- - [mapshaper](http://mapshaper.org)
+ - [mapshaper@0.2.x](http://mapshaper.org)
 
 OS X Macports
 ```
 port install gdal
 port install npm
-npm install mapshaper
+npm install mapshaper@0.2.x
 make
 ```

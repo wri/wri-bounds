@@ -5,3 +5,6 @@
 
 node_modules/
 shp/
+
+#source-files
+ne_10m*
