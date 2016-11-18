@@ -8,3 +8,5 @@ shp/
 
 #source-files
 ne_10m*
+
+*.DS_Store

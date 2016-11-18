@@ -33,6 +33,10 @@ CTR_PRIMARY=shp/all_primary_countries.shp
 CTR_CN_PRIMARY=shp/cn_primary_countries.shp
 CTR_IN_PRIMARY=shp/in_primary_countries.shp
 
+INTL_SVG=intl_map.svg
+IN_SVG=in_map.svg
+CN_SVG=cn_map.svg
+
 LAND=shp/land_areas.shp
 
 BNDS:=$(BND_CP) $(BND_INTL) $(BND_CN) $(BND_IN) \
@@ -44,7 +48,10 @@ CTRS:=$(CTR_ALL) $(CTR_PRIMARY) $(CTR_CN) $(CTR_CN_PRIMARY) \
 _=shp/__tmp.shp
 _2=shp/__tmp2.shp
 
-all: zips geojson maps
+SIMPLIFY=.05
+PROJ=wintri
+
+all: zips geojson dist/svgs.zip
 
 geojsongz: $(patsubst shp/%.shp, dist/%.geojson.gz, $(CTRS) $(BNDS))
 
@@ -52,31 +59,32 @@ zips: $(patsubst shp/%.shp, dist/%.zip, $(CTRS) $(BNDS))
 
 geojson: $(patsubst shp/%.shp, dist/%.geojson, $(CTRS) $(BNDS))
 
-maps: dist/intl_map.svg dist/in_map.svg dist/cn_map.svg
+dist/svgs.zip: $(INTL_SVG) $(CN_SVG) $(IN_SVG) | dist
+	zip -j $@ $^
 
-dist/intl_map.svg: $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
-	mapshaper -i $^ combine-files -simplify .05 -filter-islands min-vertices=4 -clip bbox=-180,-85,180,85 -proj webmercator \
+$(INTL_SVG): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj $(PROJ) -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
 		-svg-style fill="#ddd" class="land" target=0 \
 		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
-		-svg-style opacity=0.5 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
+		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
 		-svg-style stroke="#000" class="boundary" stroke-width=0.5 target=3 \
 		-svg-style stroke="#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
 		-o $@ force
 
-dist/cn_map.svg: $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
-	mapshaper -i $^ combine-files -simplify .05 -filter-islands min-vertices=4 -clip bbox=-180,-85,180,85 -proj webmercator \
+$(CN_SVG): $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj $(PROJ) -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
 		-svg-style fill="#ddd" class="land" target=0 \
 		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
-		-svg-style opacity=0.5 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
+		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
 		-svg-style stroke="#000" class="boundary" stroke-width=0.5 target=3 \
 		-svg-style stroke="#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
 		-o $@ force
 
-dist/in_map.svg: $(LAND) $(CTR_IN_PRIMARY) $(DIS_IN) $(BND_IN) $(BND_IN_DIS)
-	mapshaper -i $^ combine-files -simplify .05 -filter-islands min-vertices=4 -clip bbox=-180,-85,180,85 -proj webmercator \
+$(IN_SVG): $(LAND) $(CTR_IN_PRIMARY) $(DIS_IN) $(BND_IN) $(BND_IN_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj $(PROJ) -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
 		-svg-style fill="#ddd" class="land" target=0 \
 		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
-		-svg-style opacity=0.5 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
+		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
 		-svg-style stroke="#000" class="boundary" stroke-width=0.5 target=3 \
 		-svg-style stroke="#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
 		-o $@ force
@@ -93,7 +101,7 @@ dist/%.geojson: shp/%.shp | dist
 shp/%_primary_countries.shp: shp/%_countries.shp
 	ogr2ogr -where PRIMARY="1" -overwrite $@ $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
 
-$(LAND): $(CTR)
+$(LAND): $(INTERSECT)
 	mapshaper -i $< -dissolve2 -o $@ force
 
 $(CTR_ALL): $(INTERSECT) $(ATTRS)
@@ -149,15 +157,20 @@ $(CTR): $(CTR_SRC)
 	ogr2ogr $(_2) $_ -lco ENCODING=UTF-8
 	mapshaper -i $(_2) auto-snap -dissolve ADM0_A3 -o $@ force
 
-# B30=Somaliland
-# B45=Saichen Glacier
-# B28=W.Sahara
-# B19=W.Sahara (Morocco control)
-# B72=Atacama corridor
-# B56=Guyana w Essequibo R.
-# B15=Guyana Courantyne headwaters
+
+# B00,B01,B02,B03,B04,B05,B06,B08,B09,B45 -> IND/PAK/CHN
+# B13 -> Sud/S.Sud
+# B16=Golan heights
+# B17 -> KEN/S.Sud
+# B19,B28 -> W.Sahara
+# B35=Georgia brk
+# B36=Moldova brk
+# B37=Georgia brk
+# B38=Azer. brk
+# B75,B76 -> CHN/BTN
+# B88 -> IND/NPL
 $(DIS): $(DIS_SRC)
-	ogr2ogr -where "(TYPE IN ('Disputed', 'Breakaway') AND sr_brk_a3<>'B30' AND sr_brk_a3<>'B72' AND sr_brk_a3<>'B56') OR sr_brk_a3='B45' OR sr_brk_a3='B28'" $_ $< -overwrite -lco ENCODING=UTF-8
+	ogr2ogr -where "sr_brk_a3 IN ('B00','B01','B02','B03','B04','B05','B06','B08','B09','B45','B13','B16','B17','B19','B28','B35','B36','B37','B38','B75')" $_ $< -overwrite -lco ENCODING=UTF-8
 	mapshaper -i $_ -each "sr_brk_a3=(sr_brk_a3=='B28' ? 'B19' : sr_brk_a3 )" -o $(_2) force
 	mapshaper -i $(_2) auto-snap -dissolve sr_brk_a3 copy-fields=NOTE_BRK,ADM0_A3 -filter-islands min-vertices=3 -o $@ force
 

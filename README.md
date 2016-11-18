@@ -3,36 +3,37 @@ Country shapefiles and boundaries for WRI
 
 Based off NaturalEarthData.com
 
-**DISCLAIMER** _These files are an attempt to represent country areas and boundaries from several perspectives. They do not imply any opinion on the part of the World Resources Institute concerning the legal status or delineation of any country or territory, nor do they imply endorsement of the represented country areas or boundaries._
+**DISCLAIMER** _These files are an attempt to represent country areas and boundaries from several perspectives and may be changed at any time. They do not imply any opinion on the part of the World Resources Institute concerning the legal status or delineation of any country or territory, nor do they imply endorsement of the represented country areas or boundaries._
 
 ### Downloads
 
-Data are organized into three perspectives: 'US', 'China (CN)', and 'India (IN)'.
+Data are organized into three perspectives: '[U.S.](https://github.com/wri/wri-bounds/blob/master/intl_map.svg?raw=true)', '[China](https://github.com/wri/wri-bounds/blob/master/cn_map.svg?raw=true)', and '[India](https://github.com/wri/wri-bounds/blob/master/in_map.svg?raw=true)'. The default version of the files is only displays the more prominent and active disputes. If needed, additional land disputed areas can be found on [Natural Earth Data](http://naciscdn.org/naturalearth/10m/cultural/).
 
-A [CSV](https://github.com/wri/wri-bounds/blob/master/countries.csv) of names and other attributes is also available.
+Vector files for print layout ([svg](https://github.com/wri/wri-bounds/blob/master/dist/svgs.zip)) and a [CSV](https://github.com/wri/wri-bounds/blob/master/countries.csv) of names and other attributes is also available.
 
 **Shapefiles**
 
 Data | Description | Links by perspective
 ------ | ------ | ------
-"Primary" countries | UN member states, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_primary_countries.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_primary_countries.zip?raw=true)
-"All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_countries.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_countries.zip?raw=true)
+"Primary" countries | UN member states, sans dependencies | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.zip?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_primary_countries.zip?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_primary_countries.zip?raw=true)
+"All" countries | All land area | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.zip?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_countries.zip?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_countries.zip?raw=true)
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.zip?raw=true)
-Non-disputed bounds | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_bounds.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_bounds.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_bounds.zip?raw=true)
-Disputed bounds | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_bounds.zip?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_bounds.zip?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_bounds.zip?raw=true)
-Disputed areas | Disputed areas | [ALL](https://github.com/wri/wri-bounds/blob/master/dist/disputed.zip?raw=true)
+Non-disputed bounds | Cartographic boundaries | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_bounds.zip?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_bounds.zip?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_country_bounds.zip?raw=true)
+Disputed bounds | Cartographic boundaries | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_bounds.zip?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_bounds.zip?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_bounds.zip?raw=true)
+Disputed areas | Disputed areas | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/disputed.zip?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed.zip?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed.zip?raw=true)
+Land | All land area | [All](https://github.com/wri/wri-bounds/blob/master/dist/land_areas.zip?raw=true)
 
 **GeoJSON**
 
 Data | Description | Links by perspective
 ------ | ------ | ------
-"Primary" countries | UN member states, sans dependencies | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_primary_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_primary_countries.geojson?raw=true)
-"All" countries | All land area | [US](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_countries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_countries.geojson?raw=true)
+"Primary" countries | UN member states, sans dependencies | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/all_primary_countries.geojson?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_primary_countries.geojson?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_primary_countries.geojson?raw=true)
+"All" countries | All land area | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/all_countries.geojson?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_countries.geojson?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_countries.geojson?raw=true)
 All boundaries | Cartographic boundaries (see below) | [All](https://github.com/wri/wri-bounds/blob/master/dist/all_bounds.geojson?raw=true)
-Non-disputed bounds | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_country_boundaries.geojson?raw=true)
-Disputed bounds | Cartographic boundaries | [US](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_boundaries.geojson?raw=true)/[CN](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_boundaries.geojson?raw=true)/[IN](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_boundaries.geojson?raw=true)
-Disputed areas | Disputed areas | [All](https://github.com/wri/wri-bounds/blob/master/dist/disputed.geojson?raw=true)
-
+Non-disputed bounds | Cartographic boundaries | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/intl_country_boundaries.geojson?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_country_boundaries.geojson?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_country_boundaries.geojson?raw=true)
+Disputed bounds | Cartographic boundaries | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/intl_disputed_boundaries.geojson?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed_boundaries.geojson?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed_boundaries.geojson?raw=true)
+Disputed areas | Disputed areas | [U.S.](https://github.com/wri/wri-bounds/blob/master/dist/disputed.geojson?raw=true)/[China](https://github.com/wri/wri-bounds/blob/master/dist/cn_disputed.geojson?raw=true)/[India](https://github.com/wri/wri-bounds/blob/master/dist/in_disputed.geojson?raw=true)
+Land | All land area | [All](https://github.com/wri/wri-bounds/blob/master/dist/land_areas.geojson?raw=true)
 
 **Key fields**
 
@@ -40,7 +41,7 @@ Countries:"PRIMARY"
 - 0:Non UN
 - 1:UN Member
 
-Boundaries:"INTL" - 'US' perspective
+Boundaries:"INTL" - 'U.S.' perspective
 - 0:Do not show
 - 1:Country boundary
 - 2:Disputed boundary
@@ -87,6 +88,8 @@ wb\_region | World Bank Region | Natural Earth Data
 
 ### Build
 
+You can modify the parameters used to generate these boundary sets.
+
 Requires:
  - [GDAL/OGR](http://www.gdal.org/index.html)
  - [node](http://nodejs.org)
@@ -99,3 +102,4 @@ port install npm
 npm install mapshaper@0.2.x
 make
 ```
+
