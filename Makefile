@@ -158,7 +158,7 @@ $(CTR): $(CTR_SRC)
 	mapshaper -i $(_2) auto-snap -dissolve ADM0_A3 -o $@ force
 
 
-# B00,B01,B02,B03,B04,B05,B06,B08,B09,B45 -> IND/PAK/CHN
+# B00,B01,B02,B03,B04,B05,B06,B07,B08,B09,B45 -> IND/PAK/CHN
 # B13 -> Sud/S.Sud
 # B16=Golan heights
 # B17 -> KEN/S.Sud
@@ -170,7 +170,7 @@ $(CTR): $(CTR_SRC)
 # B75,B76 -> CHN/BTN
 # B88 -> IND/NPL
 $(DIS): $(DIS_SRC)
-	ogr2ogr -where "sr_brk_a3 IN ('B00','B01','B02','B03','B04','B05','B06','B08','B09','B45','B13','B16','B17','B19','B28','B35','B36','B37','B38','B75')" $_ $< -overwrite -lco ENCODING=UTF-8
+	ogr2ogr -where "sr_brk_a3 IN ('B00','B01','B02','B03','B04','B05','B06','B07','B08','B09','B45','B13','B16','B17','B19','B28','B35','B36','B37','B38','B75')" $_ $< -overwrite -lco ENCODING=UTF-8
 	mapshaper -i $_ -each "sr_brk_a3=(sr_brk_a3=='B28' ? 'B19' : sr_brk_a3 )" -o $(_2) force
 	mapshaper -i $(_2) auto-snap -dissolve sr_brk_a3 copy-fields=NOTE_BRK,ADM0_A3 -filter-islands min-vertices=3 -o $@ force
 
