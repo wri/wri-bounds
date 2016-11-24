@@ -49,11 +49,13 @@ _=shp/__tmp.shp
 _2=shp/__tmp2.shp
 
 SIMPLIFY=.05
-PROJ=wintri
+PROJ=+proj=wintri
 
-all: zips geojson dist/svgs.zip
+all: zips geojson mingeojson dist/svgs.zip
 
 geojsongz: $(patsubst shp/%.shp, dist/%.geojson.gz, $(CTRS) $(BNDS))
+
+mingeojson: $(patsubst shp/%.shp, dist/%.min.geojson, $(CTRS) $(BNDS))
 
 zips: $(patsubst shp/%.shp, dist/%.zip, $(CTRS) $(BNDS))
 
@@ -72,7 +74,7 @@ $(INTL_SVG): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
 		-o $@ force
 
 $(CN_SVG): $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
-	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj $(PROJ) -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-65.01,-90,-64.99,90 -proj $(PROJ) +lon_0=115 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
 		-svg-style fill="#ddd" class="land" target=0 \
 		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
 		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
@@ -81,7 +83,7 @@ $(CN_SVG): $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
 		-o $@ force
 
 $(IN_SVG): $(LAND) $(CTR_IN_PRIMARY) $(DIS_IN) $(BND_IN) $(BND_IN_DIS)
-	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj $(PROJ) -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-100.01,-90,-99.99,90 -proj $(PROJ) +lon_0=80 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
 		-svg-style fill="#ddd" class="land" target=0 \
 		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
 		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
@@ -97,6 +99,9 @@ dist/%.geojson.gz: dist/%.geojson | dist
 
 dist/%.geojson: shp/%.shp | dist
 	mapshaper -i $< encoding=UTF-8 -o $@ force
+
+dist/%.min.geojson: shp/%.shp | dist
+	mapshaper -i $< encoding=UTF-8 -simplify $(SIMPLIFY) -filter-islands min-vertices=4 -o $@ precision=0.0001  force
 
 shp/%_primary_countries.shp: shp/%_countries.shp
 	ogr2ogr -where PRIMARY="1" -overwrite $@ $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
