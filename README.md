@@ -13,7 +13,7 @@ Vector files for print layout ([svg](https://github.com/wri/wri-bounds/blob/mast
 
 U.S. | China | India
 ---- | ----- | -----
-![U.S.](https://cdn.rawgit.com/wri/wri-bounds/master/intl_map.svg) | ![China](https://cdn.rawgit.com/wri/wri-bounds/master/cn_map.svg) | ![India](https://cdn.rawgit.com/wri/wri-bounds/master/in_map.svg)
+![U.S.](https://cdn.rawgit.com/wri/wri-bounds/master/intl_wintri.svg) | ![China](https://cdn.rawgit.com/wri/wri-bounds/master/cn_wintri.svg) | ![India](https://cdn.rawgit.com/wri/wri-bounds/master/in_wintri.svg)
 
 **GIS Files by Country Perspective**
 

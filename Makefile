@@ -33,9 +33,14 @@ CTR_PRIMARY=shp/all_primary_countries.shp
 CTR_CN_PRIMARY=shp/cn_primary_countries.shp
 CTR_IN_PRIMARY=shp/in_primary_countries.shp
 
-INTL_SVG=intl_map.svg
-IN_SVG=in_map.svg
-CN_SVG=cn_map.svg
+INTL_MILLER=intl_miller.svg
+IN_MILLER=in_miller.svg
+CN_MILLER=cn_miller.svg
+US_MILLER=us_miller.svg
+INTL_WINTRI=intl_wintri.svg
+IN_WINTRI=in_wintri.svg
+CN_WINTRI=cn_wintri.svg
+US_WINTRI=us_wintri.svg
 
 LAND=shp/land_areas.shp
 
@@ -49,7 +54,12 @@ _=shp/__tmp.shp
 _2=shp/__tmp2.shp
 
 SIMPLIFY=.05
-PROJ=+proj=wintri
+SVG_STYLE:=-svg-style fill="\#ddd" class="land" target=0 \
+		-svg-style fill="\#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
+		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
+		-svg-style stroke="\#000" class="boundary" stroke-width=0.5 target=3 \
+		-svg-style stroke="\#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
+
 
 all: zips geojson mingeojson dist/svgs.zip
 
@@ -61,35 +71,32 @@ zips: $(patsubst shp/%.shp, dist/%.zip, $(CTRS) $(BNDS))
 
 geojson: $(patsubst shp/%.shp, dist/%.geojson, $(CTRS) $(BNDS))
 
-dist/svgs.zip: $(INTL_SVG) $(CN_SVG) $(IN_SVG) | dist
+dist/svgs.zip: $(INTL_MILLER) $(CN_MILLER) $(IN_MILLER) $(US_MILLER) $(INTL_WINTRI) $(CN_WINTRI) $(IN_WINTRI) $(US_WINTRI)| dist
 	zip -j $@ $^
 
-$(INTL_SVG): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
-	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj $(PROJ) -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
-		-svg-style fill="#ddd" class="land" target=0 \
-		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
-		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
-		-svg-style stroke="#000" class="boundary" stroke-width=0.5 target=3 \
-		-svg-style stroke="#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
-		-o $@ force
+$(INTL_WINTRI): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj +proj=wintri densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
 
-$(CN_SVG): $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
-	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-65.01,-90,-64.99,90 -proj $(PROJ) +lon_0=115 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
-		-svg-style fill="#ddd" class="land" target=0 \
-		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
-		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
-		-svg-style stroke="#000" class="boundary" stroke-width=0.5 target=3 \
-		-svg-style stroke="#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
-		-o $@ force
+$(US_WINTRI): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=89.99,-90,90.01,90 -proj +proj=wintri +lon_0=-90 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
 
-$(IN_SVG): $(LAND) $(CTR_IN_PRIMARY) $(DIS_IN) $(BND_IN) $(BND_IN_DIS)
-	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-100.01,-90,-99.99,90 -proj $(PROJ) +lon_0=80 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 \
-		-svg-style fill="#ddd" class="land" target=0 \
-		-svg-style fill="#ccc" class="'ADM0_A3-'+ADM0_A3" target=1 \
-		-svg-style opacity=0.2 class="'sr_brk_a3-'+sr_brk_a3" target=2 \
-		-svg-style stroke="#000" class="boundary" stroke-width=0.5 target=3 \
-		-svg-style stroke="#800" class="boundary-disputed" stroke-width=0.5 stroke-dasharray="2, 2" target=4 \
-		-o $@ force
+$(CN_WINTRI): $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-65.01,-90,-64.99,90 -proj +proj=wintri +lon_0=115 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
+
+$(IN_WINTRI): $(LAND) $(CTR_IN_PRIMARY) $(DIS_IN) $(BND_IN) $(BND_IN_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-100.01,-90,-99.99,90 -proj +proj=wintri +lon_0=80 densify -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
+
+$(INTL_MILLER): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -proj +proj=mill -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
+
+$(US_MILLER): $(LAND) $(CTR_PRIMARY) $(DIS) $(BND_INTL) $(BND_INTL_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=89.99,-90,90.01,90 -proj +proj=mill +lon_0=-90 -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
+
+$(CN_MILLER): $(LAND) $(CTR_CN_PRIMARY) $(DIS_CN) $(BND_CN) $(BND_CN_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-65.01,-90,-64.99,90 -proj +proj=mill +lon_0=115 -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
+
+$(IN_MILLER): $(LAND) $(CTR_IN_PRIMARY) $(DIS_IN) $(BND_IN) $(BND_IN_DIS)
+	mapshaper -i $^ combine-files -clip bbox=-180,-85,180,85 -erase bbox=-100.01,-90,-99.99,90 -proj +proj=mill +lon_0=80 -simplify $(SIMPLIFY) -filter-islands min-vertices=4 $(SVG_STYLE) -o $@ force
 
 dist/%.zip: shp/%.shp | dist
 	zip -j $@ $(basename $<).*
@@ -136,8 +143,9 @@ $(BNDS): $(BND_ALL)
 	ogr2ogr -overwrite $(BND_CP) $< -lco ENCODING=UTF-8 -s_srs EPSG:4326 -t_srs EPSG:4326
 
 $(BND_ALL): $(INTERSECT) $(9DASH) disputed.js
-	node disputed.js $< $@
-	ogr2ogr $@ $(9DASH) -append
+	node disputed.js $< $_
+	ogr2ogr $_ $(9DASH) -append
+	mapshaper -i $_ -each "INTL=(INTL==null?0:INTL), CHN=(CHN==null?1:CHN), IND=(IND==null?0:IND)" -o $@ force
 
 $(INTERSECT): $(CTR) $(DIS)
 	mapshaper -i $< auto-snap -erase $(word 2,$^) -o $_ force
