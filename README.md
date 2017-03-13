@@ -7,7 +7,7 @@ Based off NaturalEarthData.com
 
 ### Downloads
 
-Data are organized into three perspectives: '[U.S.](https://github.com/wri/wri-bounds/blob/master/intl_map.svg?raw=true)', '[China](https://github.com/wri/wri-bounds/blob/master/cn_map.svg?raw=true)', and '[India](https://github.com/wri/wri-bounds/blob/master/in_map.svg?raw=true)'. The default version of the files only display some of the more prominent and active disputes. If needed, additional disputed areas can be found on [Natural Earth Data](http://naciscdn.org/naturalearth/10m/cultural/).
+Data are organized into three perspectives: 'U.S.', 'China', and 'India'. The default version of the files only display some of the more prominent and active disputes. If needed, additional disputed areas can be found on [Natural Earth Data](http://naciscdn.org/naturalearth/10m/cultural/).
 
 Vector files for print layout ([svg](https://github.com/wri/wri-bounds/blob/master/dist/svgs.zip)) and a [csv](https://github.com/wri/wri-bounds/blob/master/countries.csv) of names and other attributes is also available.
 
